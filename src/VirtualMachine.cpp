@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-21 15:13:24
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-16 15:25:00
+ * @LastEditTime: 2022-12-16 16:56:36
  * @FilePath: \VirtualMachineCpp\src\VirtualMachine.cpp
  * @Description:
  */
@@ -56,8 +56,11 @@ namespace ns
 }
 
 //! construct
-VirtualMachine::VirtualMachine(/* args */)
+VirtualMachine::VirtualMachine(const std::string& json_path)
 {
+
+
+    InitFromJson(json_path);
 
     m_res_tte = (e_gettimetoendres_event_t *)malloc(sizeof(e_gettimetoendres_event_t));
     m_res_machine_state = (e_getmachinestateres_event_t *)malloc(sizeof(e_getmachinestateres_event_t));
@@ -73,6 +76,7 @@ VirtualMachine::VirtualMachine(/* args */)
 }
 VirtualMachine::~VirtualMachine()
 {
+    cout<<"VirtualMachine::~VirtualMachine()   byebye"<<endl;
 }
 
 Process *VirtualMachine::GetProcessBy_DS_ID(int drum_id, int strategy_id, int process_id)
@@ -334,6 +338,11 @@ e_gettimetoendres_event_t *VirtualMachine::GetTimeToEndRes()
     //? 洗涤结束
     return m_res_tte;
 #endif
+}
+
+e_getprocessconfigres_event_t* VirtualMachine::GetProcessCfgRes()
+{
+    
 }
 
 Drum *VirtualMachine::GetDrumBy_ID(int pdrum_id)

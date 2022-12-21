@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-22 10:16:22
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-15 17:01:49
+ * @LastEditTime: 2022-12-16 16:02:10
  * @FilePath: \VirtualMachineCpp\src\Strategy.cpp
  * @Description:
  */
@@ -57,7 +57,7 @@ Strategy::Strategy(const std::string &json_path)
 
   for (auto i : json_processid_list.items())
   {
-    cout<<" i .value "<<i.value()<<endl;
+   // cout<<" i .value "<<i.value()<<endl;
     this->map_process.insert(make_pair(i.value(), p_cfg));
   }
 }

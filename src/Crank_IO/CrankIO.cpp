@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-06 14:30:56
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-14 13:17:42
+ * @LastEditTime: 2022-12-16 16:25:31
  * @FilePath: \VirtualMachine\src\Crank_IO\CrankIO.cpp
  * @Description: 基础IO层实现文件
  */
@@ -38,7 +38,10 @@ typedef struct
   char name[1];
 } hello_event_t;
 
+//!迁移到VS时候再打开这个宏
+//#define COMPILE_IN_VS
 //#define _NO_CRT_STDIO_INLINE
+
 
 using namespace std;
 
@@ -79,6 +82,8 @@ void CrankIO::InitIOChannel()
 
 bool CrankIO::SendMSG(const char *data, const char *fmt, int len, const char *target)
 {
+   cout<<" shit bro"<<endl;
+   return true;
 }
 
 //接收通道中的消息

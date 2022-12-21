@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-06 14:30:45
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-08 16:08:57
+ * @LastEditTime: 2022-12-16 16:28:19
  * @FilePath: \VirtualMachine\src\Crank_IO\CrankIO.h
  * @Description: Crank IO 的 底层通讯的封装
  * 对外提供发送和接收 的接口
@@ -32,7 +32,7 @@ public:
     ~CrankIO(){}
     void InitIOChannel();
 
-    //data+fmt+len+target
+    //data+fmt+len+target  由于要被bind绑定，显示表明占位符，所以默认参数没用
     bool SendMSG(const char* data,const char* fmt,int len,const char* target=NULL);
 
     void RecvMSG();

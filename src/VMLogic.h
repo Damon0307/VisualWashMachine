@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-07 11:13:49
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-14 13:10:32
+ * @LastEditTime: 2022-12-16 16:32:35
  * @FilePath: \VirtualMachine\src\VMLogic.h
  * @Description: 虚拟机模型的业务逻辑部分，主要从 数据层 得到属于以后，对书进行解析，然后对业务进行分发处理
  */
@@ -23,10 +23,12 @@ class VMLogic
 {
 
 public:
-    VMLogic(/* args */){}
+    VMLogic(const string&  base_json_path){
+      m_vm = std::move(unique_ptr<VirtualMachine>(new VirtualMachine(base_json_path)));
+    }
     ~VMLogic(){}
 
-    void LoadMachine(std::unique_ptr<VirtualMachine> p);
+    
 
 //todo 有可能从UI拉的模式，改成后端推的模式，所以 可能需要引入定时器
 
@@ -36,7 +38,7 @@ public:
     void DealGetUserCfgReq(char* ev_name,void* ev_data,char* ev_fmt);
     void DealGetTimeToEndReq(char* ev_name,void* ev_data,char* ev_fmt);
        
-    void OnRecvDataFromCrankIO(char* ev_name,void* ev_data,char* ev_fmt);
+    void OnRecvDataFromCrankIO(char*,void*,char*);
 
     void InitSlotMap(const char* event_name,event_slot& event_slot);
 

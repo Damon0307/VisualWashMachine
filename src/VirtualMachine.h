@@ -5,7 +5,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-21 15:12:42
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-16 13:54:44
+ * @LastEditTime: 2022-12-16 16:54:05
  * @FilePath: \VirtualMachineCpp\src\VirtualMachine.h
  * @Description:
  */
@@ -23,14 +23,15 @@ class VirtualMachine
 {
 
 public:
-    VirtualMachine(/* args */);
+    VirtualMachine(const std::string& json_path);
     void InitFromJson(const std::string& json_path);
     ~VirtualMachine();
-    e_getprocessconfigres_event_t* GetProcessCfgRes();
+   
     e_getmachinestateres_event_t*  GetMachineStateRes();
     e_getuserconfigres_event_t*    GetUserCfgRes();
     e_getgeneralstateres_event_t*  GetGeneralStateRes();
     e_gettimetoendres_event_t*     GetTimeToEndRes();
+    e_getprocessconfigres_event_t* GetProcessCfgRes();
  
 private:
     /* data */
