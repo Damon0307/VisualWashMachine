@@ -5,14 +5,17 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-22 14:18:57
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-15 16:46:28
+ * @LastEditTime: 2022-12-26 14:39:45
  * @FilePath: \VirtualMachineCpp\src\Process.h
  * @Description: 基本的程序
  * 如果最外层没有提供相应的配置文件，则使用最简单的默认配置;
  */
 #include "Headers.h"
 
+ 
+#include "UI_Protocol_Events.h"
 
+#include <stdlib.h>
 #include <iostream>
 using namespace std;
 
@@ -142,7 +145,10 @@ class Process
 {
 
 public:
-    Process(/* args */) {}
+    Process(/* args */) {
+        m_pcfg_res = (e_getprocessconfigres_event_t*)malloc(sizeof(e_getprocessconfigres_event_t));
+        memset(m_pcfg_res,0,sizeof(*m_pcfg_res));
+    }
     ~Process() {}
 
     int GetDefaultTTE();
@@ -158,10 +164,13 @@ public:
     }
 
 //处理和自己相关的消息， 其实就是填写结构体内容
-   bool  Deal_UIGET_CFG();
-     
+ 
+ 
+e_getprocessconfigres_event_t* GetProcessCfgRes();   
 
 private:
+
+    e_getprocessconfigres_event_t* m_pcfg_res;
     Process_CFG_1 pcfg_1;
     Process_CFG_2 pcfg_2;
 };

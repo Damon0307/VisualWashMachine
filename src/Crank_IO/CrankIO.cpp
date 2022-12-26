@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-06 14:30:56
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-16 16:25:31
+ * @LastEditTime: 2022-12-26 10:34:56
  * @FilePath: \VirtualMachine\src\Crank_IO\CrankIO.cpp
  * @Description: 基础IO层实现文件
  */
@@ -82,7 +82,7 @@ void CrankIO::InitIOChannel()
 
 bool CrankIO::SendMSG(const char *data, const char *fmt, int len, const char *target)
 {
-   cout<<" shit bro"<<endl;
+   
    return true;
 }
 

@@ -1,0 +1,28 @@
+{
+	"uibackend_err_code": 0,
+	"network": 1,
+	"coupling_wd_state":0,
+	"drums": [{
+			"drum_id": 1,
+			"run_mode": 1,
+			"run_strategy": 2,
+			"run_process_id": 1,
+			"run_stage": 3,
+			"run_progress": 66,
+			"door": 1,
+			"err_code": 0,
+			"strategys": ["up_dry_strategy.json", "up_air_strategy.json", "up_care_strategy.json"]
+		},
+		{
+			"drum_id": 2,
+			"run_mode": 1,
+			"run_strategy": 2,
+			"run_process_id": 1,
+			"run_stage": 3,
+			"run_progress": 66,
+			"door": 1,
+			"err_code": 0,
+			"strategys": ["down_wash_strategy.json"]
+		}
+	]
+}

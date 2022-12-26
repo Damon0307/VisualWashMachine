@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-21 15:13:24
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-16 16:56:36
+ * @LastEditTime: 2022-12-26 16:47:58
  * @FilePath: \VirtualMachineCpp\src\VirtualMachine.cpp
  * @Description:
  */
@@ -280,61 +280,10 @@ e_gettimetoendres_event_t *VirtualMachine::GetTimeToEndRes()
  // 如果没有这个程序会返回null 进而出错
     m_res_tte->Drum1_Air_16 = GetProcessBy_DS_ID(drum1, air, 16)->GetDefaultTTE();
     m_res_tte->Drum1_Air_17 = GetProcessBy_DS_ID(drum1, air, 17)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_1 = GetProcessBy_DS_ID(drum1, air, 1)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_21 = GetProcessBy_DS_ID(drum1, air, 21)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_26 = GetProcessBy_DS_ID(drum1, air, 26)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_28 = GetProcessBy_DS_ID(drum1, air, 28)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_2 = GetProcessBy_DS_ID(drum1, air, 2)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_31 = GetProcessBy_DS_ID(drum1, air, 31)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_35 = GetProcessBy_DS_ID(drum1, air, 35)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_3 = GetProcessBy_DS_ID(drum1, air, 3)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_7 = GetProcessBy_DS_ID(drum1, air, 7)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_8 = GetProcessBy_DS_ID(drum1, air, 8)->GetDefaultTTE();
-    m_res_tte->Drum1_Air_9 = GetProcessBy_DS_ID(drum1, air, 9)->GetDefaultTTE();
-    //? air 结束
-
-    m_res_tte->Drum1_Dry_12 = GetProcessBy_DS_ID(drum1, dry, 12)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_16 = GetProcessBy_DS_ID(drum1, dry, 16)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_19 = GetProcessBy_DS_ID(drum1, dry, 19)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_1 = GetProcessBy_DS_ID(drum1, dry, 1)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_2 = GetProcessBy_DS_ID(drum1, dry, 2)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_24 = GetProcessBy_DS_ID(drum1, dry, 24)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_26 = GetProcessBy_DS_ID(drum1, dry, 26)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_27 = GetProcessBy_DS_ID(drum1, dry, 27)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_29 = GetProcessBy_DS_ID(drum1, dry, 29)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_32 = GetProcessBy_DS_ID(drum1, dry, 32)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_33 = GetProcessBy_DS_ID(drum1, dry, 33)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_34 = GetProcessBy_DS_ID(drum1, dry, 34)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_36 = GetProcessBy_DS_ID(drum1, dry, 36)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_37 = GetProcessBy_DS_ID(drum1, dry, 37)->GetDefaultTTE();
-    m_res_tte->Drum1_Dry_42 = GetProcessBy_DS_ID(drum1, dry, 42)->GetDefaultTTE();
-    //? dry 结束
-
-    m_res_tte->Drum1_Wellness_38 = GetProcessBy_DS_ID(drum1, wellness, 38)->GetDefaultTTE();
-    m_res_tte->Drum1_Wellness_39 = GetProcessBy_DS_ID(drum1, wellness, 39)->GetDefaultTTE();
-    m_res_tte->Drum1_Wellness_40 = GetProcessBy_DS_ID(drum1, wellness, 40)->GetDefaultTTE();
-    m_res_tte->Drum1_Wellness_41 = GetProcessBy_DS_ID(drum1, wellness, 41)->GetDefaultTTE();
+   ;
     //? 保养 结束
     m_res_tte->Drum2_Wash_10 = GetProcessBy_DS_ID(drum2, wash, 10)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_1 = GetProcessBy_DS_ID(drum2, wash, 1)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_11 = GetProcessBy_DS_ID(drum2, wash, 11)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_12 = GetProcessBy_DS_ID(drum2, wash, 12)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_14 = GetProcessBy_DS_ID(drum2, wash, 14)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_16 = GetProcessBy_DS_ID(drum2, wash, 16)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_18 = GetProcessBy_DS_ID(drum2, wash, 18)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_19 = GetProcessBy_DS_ID(drum2, wash, 19)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_2 = GetProcessBy_DS_ID(drum2, wash, 2)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_20 = GetProcessBy_DS_ID(drum2, wash, 20)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_22 = GetProcessBy_DS_ID(drum2, wash, 22)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_24 = GetProcessBy_DS_ID(drum2, wash, 24)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_25 = GetProcessBy_DS_ID(drum2, wash, 25)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_26 = GetProcessBy_DS_ID(drum2, wash, 26)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_29 = GetProcessBy_DS_ID(drum2, wash, 29)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_30 = GetProcessBy_DS_ID(drum2, wash, 30)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_32 = GetProcessBy_DS_ID(drum2, wash, 32)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_34 = GetProcessBy_DS_ID(drum2, wash, 34)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_36 = GetProcessBy_DS_ID(drum2, wash, 36)->GetDefaultTTE();
-    m_res_tte->Drum2_Wash_4 = GetProcessBy_DS_ID(drum2, wash, 4)->GetDefaultTTE();
+ 
     //? 洗涤结束
     return m_res_tte;
 #endif
@@ -342,7 +291,71 @@ e_gettimetoendres_event_t *VirtualMachine::GetTimeToEndRes()
 
 e_getprocessconfigres_event_t* VirtualMachine::GetProcessCfgRes()
 {
+
+    // Process* (int drum_id,int strategy_id,int process_id);
+     auto process_cfg_res = GetProcessBy_DS_ID(ui_cur_drum_id,ui_cur_strategy,ui_cur_process_id)->GetProcessCfgRes();
+
+     process_cfg_res->drum_id=ui_cur_drum_id;
+     process_cfg_res->strategy =ui_cur_strategy;
+     process_cfg_res->process_id =ui_cur_process_id;
+     return process_cfg_res;
+}
+
+//处理用户发起的关于流程部分的请求， 启停控制， 程序配置下发
+void VirtualMachine::DealProcessCmdReq(int drum_id,int strategy,int processid,int cfg_type,int cfgv1,int cfgv2,char* cfg_str)
+{
+    #if 0
+ 
+ enum ProcessCMD {
+    Selected=1, //! 程序选择 //起始值为  1
+    QuickStart, // 快速启动
+    Coltrol, // 普通 启动/暂停
+    GoWaitMode, // 程序停止
+    Reserve, // 预约
+    Temperature, //烘干温度
+    DryTime, // 烘干时间
+    AntiWrink, // 防皱
+    DryMode, // 烘干模式待商榷
+    DryLevel, // 干燥度
+    Anion, // 负离子
+    Sanitize, // 除菌螨
+    SuperAirMode, // 超级空气洗优化模式
+    SwitchProcess, // 在已经运行流程状态下切换到新的流程并进入配置界面
+    WashTime,//洗涤时间
+    WashTemp,//洗涤温度
+    Rinse,//漂洗次数
+    Speed,//转速
+    Stain,//特渍
+    UV,//紫外
+    Plasma,//光等离子
+    CouplingWD,//洗烘联动
+    HighWaterLevel, //附加功能 高水位
+    SuperCleanWash, //附加功能 超净洗
+    SoakWash,       //附加功能 浸泡洗
+    NightWash,      //附加功能 夜间洗
+    ECOWash,        //附加功能 节能洗
+    AntiAllergy,    //附加功能 防过敏
+    Detergent,//洗涤剂  
+    Softener,//柔顺剂   
+};
+    #endif
+
+    switch (cfg_type)
+    {
+    case ProcessCMD::Selected:
+         {
+            this->ui_cur_drum_id = drum_id;
+            this->ui_cur_strategy =strategy;
+            this->ui_cur_process_id = processid;
+         }
+        break;
     
+    default:
+        break;
+    }
+
+ 
+
 }
 
 Drum *VirtualMachine::GetDrumBy_ID(int pdrum_id)
@@ -354,4 +367,7 @@ Drum *VirtualMachine::GetDrumBy_ID(int pdrum_id)
             return i;
         }
     }
+
+    cout<<" nonexist drum "<<endl;
+    return nullptr;
 }

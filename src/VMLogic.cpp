@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-07 11:15:02
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-16 16:51:29
+ * @LastEditTime: 2022-12-26 10:38:15
  * @FilePath: \VirtualMachine\src\VMLogic.cpp
  * @Description: 业务层实现文件，  实现对业务的封装 
  */
@@ -57,8 +57,6 @@ void VMLogic::InitSlotMap(const char* event_name,event_slot& event_slot)
  
 #if 0
  'std::unordered_map<std::__cxx11::basic_string<char>, std::function<void(char*, void*, char*)> >::insert(std::pair<const char*, void (VMLogic::*)(char*, void*, char*)>)'|
-
-
 no match for call to '(std::function<int(const char*, const char*, int, const char*)>) (e_getprocessconfigres_event_t*&, const char [40], long long unsigned int)'|
 #endif
 
@@ -68,8 +66,7 @@ no match for call to '(std::function<int(const char*, const char*, int, const ch
  
 //todo处理 获取流程配置请求
 void VMLogic::DealGetProcessCfgReq(char* ev_name,void* ev_data,char* ev_fmt)
-{
-     //shit about msg size.
+{ 
       auto res =m_vm.get()->GetProcessCfgRes();
       m_send_func((char*)res,E_GETPROCESSCONFIGREQ_FMT,sizeof(*res),nullptr);
      
