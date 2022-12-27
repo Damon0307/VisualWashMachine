@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-21 15:13:24
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-26 16:47:58
+ * @LastEditTime: 2022-12-27 16:56:53
  * @FilePath: \VirtualMachineCpp\src\VirtualMachine.cpp
  * @Description:
  */
@@ -274,11 +274,8 @@ e_gettimetoendres_event_t *VirtualMachine::GetTimeToEndRes()
     memset(m_res_tte, 0, sizeof(*m_res_tte));
     //! m_res_tte->Drum1_Air_12 = GetProcessBy_DS_ID(1,2,12)->GetDefaultTTE();
     m_res_tte->Drum1_Air_12 = GetProcessBy_DS_ID(drum1, air, 12)->GetDefaultTTE();
-   // auto pp =  GetProcessBy_DS_ID(drum1, air, 13);
-  //  m_res_tte->Drum1_Air_13 = GetProcessBy_DS_ID(drum1, air, 13)->GetDefaultTTE();
-  //  m_res_tte->Drum1_Air_15 = GetProcessBy_DS_ID(drum1, air, 15)->GetDefaultTTE();
+   ;
  // 如果没有这个程序会返回null 进而出错
-    m_res_tte->Drum1_Air_16 = GetProcessBy_DS_ID(drum1, air, 16)->GetDefaultTTE();
     m_res_tte->Drum1_Air_17 = GetProcessBy_DS_ID(drum1, air, 17)->GetDefaultTTE();
    ;
     //? 保养 结束
@@ -304,42 +301,7 @@ e_getprocessconfigres_event_t* VirtualMachine::GetProcessCfgRes()
 //处理用户发起的关于流程部分的请求， 启停控制， 程序配置下发
 void VirtualMachine::DealProcessCmdReq(int drum_id,int strategy,int processid,int cfg_type,int cfgv1,int cfgv2,char* cfg_str)
 {
-    #if 0
  
- enum ProcessCMD {
-    Selected=1, //! 程序选择 //起始值为  1
-    QuickStart, // 快速启动
-    Coltrol, // 普通 启动/暂停
-    GoWaitMode, // 程序停止
-    Reserve, // 预约
-    Temperature, //烘干温度
-    DryTime, // 烘干时间
-    AntiWrink, // 防皱
-    DryMode, // 烘干模式待商榷
-    DryLevel, // 干燥度
-    Anion, // 负离子
-    Sanitize, // 除菌螨
-    SuperAirMode, // 超级空气洗优化模式
-    SwitchProcess, // 在已经运行流程状态下切换到新的流程并进入配置界面
-    WashTime,//洗涤时间
-    WashTemp,//洗涤温度
-    Rinse,//漂洗次数
-    Speed,//转速
-    Stain,//特渍
-    UV,//紫外
-    Plasma,//光等离子
-    CouplingWD,//洗烘联动
-    HighWaterLevel, //附加功能 高水位
-    SuperCleanWash, //附加功能 超净洗
-    SoakWash,       //附加功能 浸泡洗
-    NightWash,      //附加功能 夜间洗
-    ECOWash,        //附加功能 节能洗
-    AntiAllergy,    //附加功能 防过敏
-    Detergent,//洗涤剂  
-    Softener,//柔顺剂   
-};
-    #endif
-
     switch (cfg_type)
     {
     case ProcessCMD::Selected:
@@ -349,13 +311,20 @@ void VirtualMachine::DealProcessCmdReq(int drum_id,int strategy,int processid,in
             this->ui_cur_process_id = processid;
          }
         break;
-    
+    case ProcessCMD::QuickStart:
+    case ProcessCMD::Coltrol:
+    case ProcessCMD::GoWaitMode:
+    {
+       GetDrumBy_ID(ui_cur_drum_id)->DealControlCmd(strategy,processid,cfg_type, cfgv1, cfgv2,cfg_str);
+    }break;
+    //其他情况均视为对应流程配置的设置
     default:
+    {
+     auto cur_process = GetProcessBy_DS_ID(ui_cur_drum_id,ui_cur_strategy,ui_cur_process_id);
+     cur_process->DealProcessCfgCMD(cfg_type,cfgv1,cfgv2,cfg_str);
+    }
         break;
     }
-
- 
-
 }
 
 Drum *VirtualMachine::GetDrumBy_ID(int pdrum_id)

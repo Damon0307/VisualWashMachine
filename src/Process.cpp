@@ -2,11 +2,14 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-22 14:19:39
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-26 16:02:56
+ * @LastEditTime: 2022-12-27 16:22:35
  * @FilePath: \VirtualMachineCpp\src\Process.cpp
  * @Description:
  */
 #include "Process.h"
+
+using namespace std;
+
 int Process::GetDefaultTTE()
 {
      return pcfg_1.default_tte;
@@ -141,6 +144,46 @@ e_getprocessconfigres_event_t *Process::GetProcessCfgRes()
      m_pcfg_res->wash_temp_max = this->pcfg_1.wash_temp_max;
      m_pcfg_res->wash_temp_cur = this->pcfg_1.wash_temp_cur;
 
-     //注意部分字段是没有填写的eg ,drumid  strategy id ,process id , 这些需要更上层的模块去填充
+     // 注意部分字段是没有填写的eg ,drumid  strategy id ,process id , 这些需要更上层的模块去填充
      return m_pcfg_res;
+}
+
+
+void Process::InitCfgMap()
+{
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Reserve, &pcfg_1.reserve_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Temperature, &pcfg_1.wash_temp_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::DryTime, &pcfg_1.dry_time_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::AntiWrink, &pcfg_1.anti_wrinkle_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::DryMode, &pcfg_1.dry_mode_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::DryLevel, &pcfg_1.dry_level_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Anion, &pcfg_1.anion_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Sanitize, &pcfg_1.sanitize_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::SuperAirMode, &pcfg_1.super_air_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::WashTime, &pcfg_1.wash_time_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::WashTemp, &pcfg_1.wash_temp_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Rinse, &pcfg_1.rinse_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Speed, &pcfg_1.speed_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Stain, &pcfg_2.stain_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::UV, &pcfg_2.uv_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Plasma, &pcfg_2.plasma_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::CouplingWD, &pcfg_2.coupling_wd_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::HighWaterLevel, &pcfg_2.high_water_level_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::SuperCleanWash, &pcfg_2.super_clean_wash_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::SoakWash, &pcfg_2.soak_wash_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::NightWash, &pcfg_2.night_wash_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::ECOWash, &pcfg_2.eco_wash_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::AntiAllergy, &pcfg_2.anti_allergy_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Detergent, &pcfg_2.Detergent_cur));
+     m_cfg_curvalue.insert(make_pair(ProcessCMD::Softener, &pcfg_2.Softener_cur));
+}
+void Process::DealProcessCfgCMD(int cfg_type, int cfgv1, int cfgv2, char *cfg_str)
+{
+ 
+     auto iter = m_cfg_curvalue.find(cfg_type);
+     if(iter!= m_cfg_curvalue.end())
+     {
+          *(iter->second) = cfgv1;
+     }
+
 }

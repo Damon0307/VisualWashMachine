@@ -298,4 +298,53 @@ typedef struct {
 } e_test_event_t;
 
 
+
+
+/****************************************枚举定义***********************************************/
+
+ 
+ enum ProcessCMD {
+    Selected=1, //! 程序选择 //起始值为  1
+    QuickStart, // 快速启动
+    Coltrol, // 普通 启动/暂停
+    GoWaitMode, // 程序停止
+    Reserve, // 预约
+    Temperature, //烘干温度
+    DryTime, // 烘干时间
+    AntiWrink, // 防皱
+    DryMode, // 烘干模式待商榷
+    DryLevel, // 干燥度
+    Anion, // 负离子
+    Sanitize, // 除菌螨
+    SuperAirMode, // 超级空气洗优化模式
+    SwitchProcess, // 在已经运行流程状态下切换到新的流程并进入配置界面
+    WashTime,//洗涤时间
+    WashTemp,//洗涤温度
+    Rinse,//漂洗次数
+    Speed,//转速
+    Stain,//特渍
+    UV,//紫外
+    Plasma,//光等离子
+    CouplingWD,//洗烘联动
+    HighWaterLevel, //附加功能 高水位
+    SuperCleanWash, //附加功能 超净洗
+    SoakWash,       //附加功能 浸泡洗
+    NightWash,      //附加功能 夜间洗
+    ECOWash,        //附加功能 节能洗
+    AntiAllergy,    //附加功能 防过敏
+    Detergent,//洗涤剂  
+    Softener,//柔顺剂   
+};
+
+
+ enum RunMode {
+    ShutDown=0, //   
+    Ready, //  
+    Running, // 
+    Pause, //  
+    AddCloth, //  
+    Invalid, // 
+    
+ };
+
 #endif // __UI_PROTOCOL_EVENTS_H__

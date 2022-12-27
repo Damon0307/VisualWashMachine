@@ -5,27 +5,31 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-22 14:18:57
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-26 14:39:45
+ * @LastEditTime: 2022-12-27 16:20:31
  * @FilePath: \VirtualMachineCpp\src\Process.h
  * @Description: 基本的程序
  * 如果最外层没有提供相应的配置文件，则使用最简单的默认配置;
  */
 #include "Headers.h"
 
- 
 #include "UI_Protocol_Events.h"
 
 #include <stdlib.h>
 #include <iostream>
-using namespace std;
+#include <map>
+ 
 
 // json 映射很好用，但是似乎长度有限制，这里需要把整个变量区域分为两个大小才能使用映射功能
- 
+
 class Process_CFG_1
 {
 public:
-    Process_CFG_1(/* args */){}
-    ~Process_CFG_1(){}
+    Process_CFG_1(/* args */)
+    {
+    }
+    ~Process_CFG_1()
+    {
+    }
     int cur_remain_time;
     int default_tte;
     int like_value;
@@ -90,8 +94,8 @@ public:
 class Process_CFG_2
 {
 public:
-    Process_CFG_2(/* args */){}
-    ~Process_CFG_2(){}
+    Process_CFG_2(/* args */) {}
+    ~Process_CFG_2() {}
     int dry_time_ctrl;
     int dry_time_vis;
     int dry_temp_ctrl;
@@ -145,34 +149,45 @@ class Process
 {
 
 public:
-    Process(/* args */) {
-        m_pcfg_res = (e_getprocessconfigres_event_t*)malloc(sizeof(e_getprocessconfigres_event_t));
-        memset(m_pcfg_res,0,sizeof(*m_pcfg_res));
+    Process(/* args */)
+    {
+        m_pcfg_res = (e_getprocessconfigres_event_t *)malloc(sizeof(e_getprocessconfigres_event_t));
+        memset(m_pcfg_res, 0, sizeof(*m_pcfg_res));
+        InitCfgMap();
     }
-    ~Process() {}
-
+    ~Process()
+    {
+        free(m_pcfg_res);
+        m_pcfg_res = NULL;
+    }
+    //! deprecated
     int GetDefaultTTE();
-    
 
-    void SetCFG_1(const Process_CFG_1& p_cfg_1){
-        cout<<"SetCFG_1 "<<p_cfg_1.anion_ctrl<<endl;
+    void SetCFG_1(const Process_CFG_1 &p_cfg_1)
+    {
+       std::cout << "SetCFG_1 " << p_cfg_1.anion_ctrl << std::endl;
         pcfg_1 = p_cfg_1;
     }
-    void SetCFG_2(const Process_CFG_2& p_cfg_2){
-        cout<<"SetCFG_2  " <<pcfg_2.Softener_ctrl<<endl;
+    void SetCFG_2(const Process_CFG_2 &p_cfg_2)
+    {
+        std::cout << "SetCFG_2  " << pcfg_2.Softener_ctrl << std::endl;
         pcfg_2 = p_cfg_2;
     }
 
-//处理和自己相关的消息， 其实就是填写结构体内容
- 
- 
-e_getprocessconfigres_event_t* GetProcessCfgRes();   
+    // 处理和自己相关的消息， 其实就是填写结构体内容
+    e_getprocessconfigres_event_t *GetProcessCfgRes();
+
+    // 处理用户下发的一些配置 基本所有的情况都是设置当前值
+    void DealProcessCfgCMD(int cfg_type, int cfgv1, int cfgv2, char *cfg_str);
 
 private:
-
-    e_getprocessconfigres_event_t* m_pcfg_res;
+    void InitCfgMap();
+    e_getprocessconfigres_event_t *m_pcfg_res;
     Process_CFG_1 pcfg_1;
     Process_CFG_2 pcfg_2;
+
+    // 将cur值的地址，与枚举值映射关联起来，他要改，便让他改就是了
+    std::map<int,int*> m_cfg_curvalue;
 };
 
 #endif // __PROCESS_H__

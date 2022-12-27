@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-14 16:03:35
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-26 13:43:59
+ * @LastEditTime: 2022-12-27 10:53:01
  * @FilePath: \VirtualMachine\src\UserCfg.h
  * @Description: 处理用户配置
  */
@@ -49,7 +49,10 @@ public:
     {
         m_res_usercfg = (e_getuserconfigres_event_t *)malloc(sizeof(e_getuserconfigres_event_t));
     }
-    ~UserCfg() {}
+    ~UserCfg() {
+       free(m_res_usercfg);
+       m_res_usercfg = NULL;
+    }
 
 
 //! 这里有个问题，就是需不需要加锁来进行同步？同步了便模拟不了真实机器造成的不同步现象
