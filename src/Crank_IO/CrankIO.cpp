@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-06 14:30:56
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-26 10:34:56
+ * @LastEditTime: 2022-12-28 14:04:32
  * @FilePath: \VirtualMachine\src\Crank_IO\CrankIO.cpp
  * @Description: 基础IO层实现文件
  */
@@ -82,13 +82,21 @@ void CrankIO::InitIOChannel()
 
 bool CrankIO::SendMSG(const char *data, const char *fmt, int len, const char *target)
 {
-   
+   //cout<<"Crank IO Going To send msg-> data: "<<data<<" fmt: "<<fmt<<" len: "<<len<<endl;
    return true;
 }
 
 //接收通道中的消息
 void CrankIO::RecvMSG()
 {
+  while (1)
+  {
+   this_thread::sleep_for(chrono::seconds(1));
+   cout<<"Trying to recv msg from io"<<endl;
+  }
+  
+
+
 #ifdef COMPILE_IN_VS
   gre_io_t *handle;
   gre_io_serialized_data_t *nbuffer = NULL;

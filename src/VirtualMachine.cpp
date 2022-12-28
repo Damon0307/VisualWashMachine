@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-11-21 15:13:24
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-27 16:56:53
+ * @LastEditTime: 2022-12-28 13:39:04
  * @FilePath: \VirtualMachineCpp\src\VirtualMachine.cpp
  * @Description:
  */
@@ -58,8 +58,7 @@ namespace ns
 //! construct
 VirtualMachine::VirtualMachine(const std::string& json_path)
 {
-
-
+ 
     InitFromJson(json_path);
 
     m_res_tte = (e_gettimetoendres_event_t *)malloc(sizeof(e_gettimetoendres_event_t));
@@ -73,6 +72,9 @@ VirtualMachine::VirtualMachine(const std::string& json_path)
 
     m_tte = std::move(unique_ptr<TTE>(new TTE));
     ns::from_json(Util::GetIns()->GetJsonFromFile(JSON_ROOT_PATH + "TTE.json"), *(m_tte.get()));
+
+
+    InitSlotMap();
 }
 VirtualMachine::~VirtualMachine()
 {
@@ -105,6 +107,8 @@ Process *VirtualMachine::GetProcessBy_DS_ID(int drum_id, int strategy_id, int pr
 
     return nullptr;
 }
+
+
 
 /**
  * @brief 从JSON文件读取配置，初始化 虚拟机器的信息
@@ -216,7 +220,7 @@ void VirtualMachine::InitFromJson(const std::string &json_path)
 }
 
 // todo 四个常用的信息模块的获取
-e_getmachinestateres_event_t *VirtualMachine::GetMachineStateRes()
+void VirtualMachine::DealMachineStateReq(char* ev_name,void* ev_data,char* ev_fmt)
 {
     //! 也考虑过做成类似USER_CFG那样的类直接进行 单一字符串JSON映射，
     //! 好处是 可以快速定义出消息，并方便的进行设置
@@ -246,23 +250,27 @@ e_getmachinestateres_event_t *VirtualMachine::GetMachineStateRes()
     m_res_machine_state->drum2_strategy = GetDrumBy_ID(drum2_id)->GetRunStrategy();
 
     // m_res_machine_state.uibackend_err_code
-
-    return m_res_machine_state;
+ 
+  m_send_func((char*)m_res_machine_state,E_GETMACHINESTATERES_FMT,sizeof(*m_res_machine_state),nullptr);
+ 
 }
-e_getuserconfigres_event_t *VirtualMachine::GetUserCfgRes()
+void VirtualMachine::DealUserCfgReq(char* ev_name,void* ev_data,char* ev_fmt)
 {
-    return m_usercfg.get()->GetUserCfgRes();
-}
-
-e_getgeneralstateres_event_t *VirtualMachine::GetGeneralStateRes()
-{
-    return m_general_state.get()->GetGeneralStateRes();
+    auto res =  m_usercfg.get()->GetUserCfgRes();
+    m_send_func((char*)res,E_GETUSERCONFIGRES_FMT,sizeof(*res),nullptr);
 }
 
-e_gettimetoendres_event_t *VirtualMachine::GetTimeToEndRes()
+void VirtualMachine::DealGeneralStateReq(char* ev_name,void* ev_data,char* ev_fmt)
 {
-    //!  由于TTE比较独立，所以采用单独模块进行管理
-    return m_tte.get()->GetTimeToEndRes();
+    cout<<" VirtualMachine DealGeneralStateReq "<<endl;
+    auto res =  m_general_state.get()->GetGeneralStateRes();
+    m_send_func((char*)res,E_GETGENERALSTATERES_FMT,sizeof(*res),nullptr);
+}
+
+void VirtualMachine::DealTimeToEndReq(char* ev_name,void* ev_data,char* ev_fmt)
+{
+    auto res =  m_tte.get()->GetTimeToEndRes();
+    m_send_func((char*)res,E_GETTIMETOENDRES_FMT,sizeof(*res),nullptr);
 #if 0
     const int drum1 = 1;
     const int drum2 = 2;
@@ -274,19 +282,16 @@ e_gettimetoendres_event_t *VirtualMachine::GetTimeToEndRes()
     memset(m_res_tte, 0, sizeof(*m_res_tte));
     //! m_res_tte->Drum1_Air_12 = GetProcessBy_DS_ID(1,2,12)->GetDefaultTTE();
     m_res_tte->Drum1_Air_12 = GetProcessBy_DS_ID(drum1, air, 12)->GetDefaultTTE();
-   ;
  // 如果没有这个程序会返回null 进而出错
     m_res_tte->Drum1_Air_17 = GetProcessBy_DS_ID(drum1, air, 17)->GetDefaultTTE();
-   ;
     //? 保养 结束
     m_res_tte->Drum2_Wash_10 = GetProcessBy_DS_ID(drum2, wash, 10)->GetDefaultTTE();
- 
     //? 洗涤结束
     return m_res_tte;
 #endif
 }
 
-e_getprocessconfigres_event_t* VirtualMachine::GetProcessCfgRes()
+void VirtualMachine::DealProcessCfgReq(char* ev_name,void* ev_data,char* ev_fmt)
 {
 
     // Process* (int drum_id,int strategy_id,int process_id);
@@ -295,7 +300,8 @@ e_getprocessconfigres_event_t* VirtualMachine::GetProcessCfgRes()
      process_cfg_res->drum_id=ui_cur_drum_id;
      process_cfg_res->strategy =ui_cur_strategy;
      process_cfg_res->process_id =ui_cur_process_id;
-     return process_cfg_res;
+
+     m_send_func((char*)process_cfg_res,E_GETPROCESSCONFIGRES_FMT,sizeof(*process_cfg_res),nullptr);
 }
 
 //处理用户发起的关于流程部分的请求， 启停控制， 程序配置下发
@@ -339,4 +345,55 @@ Drum *VirtualMachine::GetDrumBy_ID(int pdrum_id)
 
     cout<<" nonexist drum "<<endl;
     return nullptr;
+}
+
+ 
+ //! 链接信号槽函数
+void VirtualMachine::InitSlotMap()
+{
+
+     string event_name_general_state =E_GETGENERALSTATEREQ_EVENT;
+     auto func_general_state =std::bind(&VirtualMachine::DealGeneralStateReq,this,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3);
+     m_slots_map.insert(make_pair(event_name_general_state, func_general_state));
+
+     string  evnet_name_machine_state =E_GETMACHINESTATEREQ_EVENT;
+     auto func_machine_state =std::bind(&VirtualMachine::DealMachineStateReq,this,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3);
+     m_slots_map.insert(make_pair(evnet_name_machine_state, func_machine_state));
+
+     string event_name_usercfg = E_GETUSERCONFIGREQ_EVENT;
+     auto func_user_cfg =std::bind(&VirtualMachine::DealUserCfgReq,this,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3);
+     m_slots_map.insert(make_pair(event_name_usercfg, func_user_cfg));
+
+     string event_name_tte =E_GETTIMETOENDREQ_EVENT;
+     auto func_tte =std::bind(&VirtualMachine::DealTimeToEndReq,this,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3);
+     m_slots_map.insert(make_pair(event_name_tte, func_tte));
+
+     string event_name_process_cfg =E_GETPROCESSCONFIGREQ_EVENT;
+     auto func_process_cfg =std::bind(&VirtualMachine::DealProcessCfgReq,this,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3);
+     m_slots_map.insert(make_pair(event_name_process_cfg, func_process_cfg));
+
+     //来自用户界面的UI请求
+     // m_slots_map.insert(make_pair(E_GETGENERALSTATERES_EVENT ,this->DealGetGeneralStateReq));
+     // m_slots_map.insert(make_pair(E_GETMACHINESTATERES_EVENT,this->DealGetMachineStateReq));
+     // m_slots_map.insert(make_pair(E_GETPROCESSCONFIGRES_EVENT,this->DealGetProcessCfgReq));
+     // m_slots_map.insert(make_pair(E_GETTIMETOENDRES_EVENT,this->DealGetTimeToEndReq));
+     //来自数据模块本身后面操作数据的请求
+     //todo shutdown warning...
+ 
+    cout<<" slot map size "<<m_slots_map.size()<<endl;
+}
+void VirtualMachine::OnRecvDataFromCrankIO(char* ev_name,void* ev_data,char* ev_fmt)
+{
+
+
+  //根据对应的事件名称，分发给相应的槽函数
+    auto iter = m_slots_map.find(ev_name);
+    if(iter != m_slots_map.end())
+     {
+         auto slot_func =iter->second;
+         slot_func(ev_name,ev_data,ev_fmt);
+     }else
+     {
+          cout<<" slot not found"<<endl;
+     }
 }

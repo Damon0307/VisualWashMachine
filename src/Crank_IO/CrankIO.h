@@ -2,7 +2,7 @@
  * @Author: diehl wei.jiacheng@diehl.com
  * @Date: 2022-12-06 14:30:45
  * @LastEditors: diehl wei.jiacheng@diehl.com
- * @LastEditTime: 2022-12-16 16:28:19
+ * @LastEditTime: 2022-12-28 13:42:16
  * @FilePath: \VirtualMachine\src\Crank_IO\CrankIO.h
  * @Description: Crank IO 的 底层通讯的封装
  * 对外提供发送和接收 的接口
@@ -40,6 +40,17 @@ public:
     void AddObserver(ob_func observer_func, int observer_id);
 
     void DeleteObserver(int observer_id);
+
+
+   void Test()
+   {
+         for(auto i : m_ob_map)
+        {
+          ob_func recv_func=i.second;
+          
+          recv_func("E_GetGeneralStateReq",nullptr,nullptr);
+        }
+   }
 
  private:
 
